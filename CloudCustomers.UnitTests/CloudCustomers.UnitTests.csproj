@@ -29,9 +29,4 @@
     <ProjectReference Include="..\CloudCustomers.API\CloudCustomers.API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Fixtures" />
-    <Folder Include="Helpers" />
-  </ItemGroup>
-
 </Project>

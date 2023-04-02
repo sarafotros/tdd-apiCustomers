@@ -1,0 +1,31 @@
+using System.Net;
+using System.Net.Http.Headers;
+using FluentAssertions;
+using Moq;
+using Moq.Protected;
+using Newtonsoft.Json;
+
+namespace CloudCustmers.UnitTests.Helpers;
+
+internal static class MockHttpMessageHandler<T>
+{
+    internal static Mock<HttpMessageHandler> SetupBasicGetResourceList(List<T> expectedResponse)
+    {
+        var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(JsonConvert.SerializeObject((expectedResponse)))
+        };
+
+        mockResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpMessageHandler>>(
+            "SendAsync",
+            ItExpr.IsAny<HttpRequestMessage>(),
+            ItExpr.IsAny<CancellationToken>());
+
+        return handlerMock;
+    }
+}
