@@ -9,7 +9,7 @@ public class UsersController : ControllerBase
 {
 
     private readonly ILogger<UsersController> _logger;
-    private IUsersService _usersService;
+    private readonly IUsersService _usersService;
 
     public UsersController(IUsersService usersService)
     {

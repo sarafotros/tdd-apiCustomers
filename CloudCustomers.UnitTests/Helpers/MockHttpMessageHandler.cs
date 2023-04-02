@@ -13,18 +13,20 @@ internal static class MockHttpMessageHandler<T>
     {
         var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            Content = new StringContent(JsonConvert.SerializeObject((expectedResponse)))
+            Content = new StringContent(JsonConvert.SerializeObject(expectedResponse))
         };
 
         mockResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
         var handlerMock = new Mock<HttpMessageHandler>();
+        
         handlerMock
             .Protected()
-            .Setup<Task<HttpMessageHandler>>(
+            .Setup<Task<HttpResponseMessage>>(
             "SendAsync",
             ItExpr.IsAny<HttpRequestMessage>(),
-            ItExpr.IsAny<CancellationToken>());
+            ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(mockResponse);
 
         return handlerMock;
     }
